@@ -1,0 +1,76 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Tailwind CSS CDN (szép kinézethez) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+
+    <script>
+    // Magyar formátum: YYYY-MM-DD HH:MM:SS
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-11 → 1-12
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    function refreshCardEvents() {
+        $.getJSON("/api/events/", function(data){
+            var tbody = $("table#result_list tbody");
+            tbody.empty();
+
+            data.forEach(function(event, index){
+                var rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-100";
+                var row = "<tr class='" + rowClass + " hover:bg-blue-100 transition-colors'>";
+                row += "<td class='px-4 py-2 border'>" + event.id + "</td>";
+                row += "<td class='px-4 py-2 border'>" + event.reader + "</td>";
+                row += "<td class='px-4 py-2 border'>" + event.uid + "</td>";
+                // magyar formátum
+                row += "<td class='px-4 py-2 border'>" + formatTimestamp(event.timestamp) + "</td>";
+                row += "</tr>";
+                tbody.append(row);
+            });
+        });
+    }
+
+    $(document).ready(function(){
+        refreshCardEvents();
+        setInterval(refreshCardEvents, 1000);
+    });
+
+    </script>
+
+
+    <style>
+        /* Táblázat szebb kinézete adminhoz */
+        #result_list {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #result_list th, #result_list td {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1 class="text-2xl font-bold mb-4">Card Events</h1>
+    <table id="result_list" class="min-w-full border border-gray-300">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2 border">ID</th>
+                <th class="px-4 py-2 border">Reader</th>
+                <th class="px-4 py-2 border">UID</th>
+                <th class="px-4 py-2 border">Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dinamikusan frissülő sorok ide jönnek -->
+        </tbody>
+    </table>
+{% endblock %}

@@ -53,11 +53,11 @@ This project demonstrates practical skills in:
 The gate opening mechanism is controlled through a relay connected to the ESP32.  
 This relay does not drive the gate directly; instead, it controls a **magnetic contactor** that switches the gate control circuit.  
 Using a contactor provides electrical isolation and ensures safe switching of the gate system while allowing the ESP32 to operate with low-voltage control signals.  
-![Relay and magnetic contactor control](images/relay_contactor.jpg)
+![Relay and magnetic contactor control](images/relay_contactor.JPG)
 
 For the NFC readers, **custom 3D-printed enclosures** were designed and manufactured to house the PN532 modules.  
 These enclosures protect the electronics, provide mechanical stability, and allow the readers to be mounted securely at the entry and exit points of the gate system.  
-![3D printed PN532 enclosure](images/pn532_enclosure.jpg)
+![3D printed PN532 enclosure](images/pn532_enclosure.JPG)
 
 ## System Architecture
 

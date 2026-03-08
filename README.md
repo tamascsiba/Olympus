@@ -1,7 +1,7 @@
 # Olympus Access Control System
 
 A full-stack NFC-based access control system built with **ESP32-S3 + PN532 readers** and a **Django REST API** backend.
-The system validates NFC cards against a central allowlist, logs all card scans, records successful entries and exits separately, and triggers gate opening for approved cards. 
+The system validates NFC cards against a central allowlist, logs all card scans, records successful entries and exits separately, and triggers gate opening for approved cards. This system was developed as a custom access control solution for a local gym.
 
 ---
 

@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("card/", views.card_event, name="card_event"),
-    path("events/", views.list_events, name="list_events"),  # GET a legutóbbi eseményekhez
+    path("events/", views.list_events, name="list_events"),
     path('check_card/', views.check_card, name='check_card'),
 
 ]

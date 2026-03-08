@@ -2,75 +2,165 @@
 
 {% block extrahead %}
     {{ block.super }}
-    <!-- jQuery -->
+
+    <!-- =========================================================
+    Custom Admin UI Enhancements for CardEvent Model
+    ---------------------------------------------------------
+    This template overrides the default Django Admin change list
+    page and adds real-time updates of NFC card events.
+
+    Features:
+    - Automatic refresh every 1 second
+    - Styled table using TailwindCSS
+    - AJAX data loading from the API endpoint
+    - Improved timestamp formatting
+    ========================================================== -->
+
+    <!-- jQuery for AJAX requests -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Tailwind CSS CDN (szép kinézethez) -->
+
+    <!-- TailwindCSS for better UI styling -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 
     <script>
-    // Magyar formátum: YYYY-MM-DD HH:MM:SS
+
+    /*
+    -------------------------------------------------------------
+    Format timestamp to readable format
+    Output format:
+        YYYY-MM-DD HH:MM:SS
+    -------------------------------------------------------------
+    */
+
     function formatTimestamp(timestamp) {
+
         const date = new Date(timestamp);
+
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-11 → 1-12
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
         const day = String(date.getDate()).padStart(2, '0');
+
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
+
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
     }
 
+
+    /*
+    -------------------------------------------------------------
+    Fetch card events from API and update the table
+    Endpoint used:
+        /api/events/
+    -------------------------------------------------------------
+    */
+
     function refreshCardEvents() {
+
         $.getJSON("/api/events/", function(data){
+
             var tbody = $("table#result_list tbody");
             tbody.empty();
 
             data.forEach(function(event, index){
+
+                // Alternate row colors for readability
                 var rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-100";
+
                 var row = "<tr class='" + rowClass + " hover:bg-blue-100 transition-colors'>";
+
                 row += "<td class='px-4 py-2 border'>" + event.id + "</td>";
                 row += "<td class='px-4 py-2 border'>" + event.reader + "</td>";
                 row += "<td class='px-4 py-2 border'>" + event.uid + "</td>";
-                // magyar formátum
+
                 row += "<td class='px-4 py-2 border'>" + formatTimestamp(event.timestamp) + "</td>";
+
                 row += "</tr>";
+
                 tbody.append(row);
+
             });
+
         });
+
     }
 
+
+    /*
+    -------------------------------------------------------------
+    Initialize page
+    - Load events immediately
+    - Refresh table every second
+    -------------------------------------------------------------
+    */
+
     $(document).ready(function(){
+
         refreshCardEvents();
+
+        // Auto refresh every 1 second
         setInterval(refreshCardEvents, 1000);
+
     });
 
     </script>
 
 
     <style>
-        /* Táblázat szebb kinézete adminhoz */
+
+        /*
+        ---------------------------------------------------------
+        Table styling improvements for Django Admin
+        ---------------------------------------------------------
+        */
+
         #result_list {
             border-collapse: collapse;
             width: 100%;
         }
-        #result_list th, #result_list td {
+
+        #result_list th,
+        #result_list td {
             text-align: left;
         }
+
     </style>
+
 {% endblock %}
+
+
+
 {% block content %}
-    <h1 class="text-2xl font-bold mb-4">Card Events</h1>
+
+    <!-- Page title -->
+    <h1 class="text-2xl font-bold mb-4">
+        NFC Card Events
+    </h1>
+
+    <!-- Card event table -->
     <table id="result_list" class="min-w-full border border-gray-300">
+
         <thead>
+
             <tr class="bg-gray-200">
+
                 <th class="px-4 py-2 border">ID</th>
                 <th class="px-4 py-2 border">Reader</th>
                 <th class="px-4 py-2 border">UID</th>
                 <th class="px-4 py-2 border">Timestamp</th>
+
             </tr>
+
         </thead>
+
         <tbody>
-            <!-- Dinamikusan frissülő sorok ide jönnek -->
+
+            <!-- Rows are dynamically inserted via AJAX -->
+
         </tbody>
+
     </table>
+
 {% endblock %}

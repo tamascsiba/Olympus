@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@_1pgz%7c9gi=)8+in12%1lgr=t31k@85#=&r7_4ab40c%o9rv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["51.21.181.218"]
+ALLOWED_HOSTS = ["ALLOWED_HOSTS_IP"]
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # 3rd party
     "rest_framework",
 
-    # saját app
+    # own app
     "api",
 ]
 
@@ -60,7 +60,7 @@ ROOT_URLCONF = 'nfcserver.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],  # ide mutatunk
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

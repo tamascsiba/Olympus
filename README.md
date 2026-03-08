@@ -1,7 +1,7 @@
 # Olympus Access Control System
 
 A full-stack NFC-based access control system built with **ESP32-S3 + PN532 readers** and a **Django REST API** backend.
-The system validates NFC cards against a central allowlist, logs all card scans, records successful entries and exits separately, and triggers gate opening for approved cards.
+The system validates NFC cards against a central allowlist, logs all card scans, records successful entries and exits separately, and triggers gate opening for approved cards. 
 
 ---
 
@@ -46,7 +46,18 @@ This project demonstrates practical skills in:
 - REST API endpoints for device-server communication
 - Timezone-aware timestamps configured for **Europe/Bratislava**
 
----
+---  
+
+## Hardware Implementation
+
+The gate opening mechanism is controlled through a relay connected to the ESP32.  
+This relay does not drive the gate directly; instead, it controls a **magnetic contactor** that switches the gate control circuit.  
+Using a contactor provides electrical isolation and ensures safe switching of the gate system while allowing the ESP32 to operate with low-voltage control signals.  
+![Relay and magnetic contactor control](images/relay_contactor.jpg)
+
+For the NFC readers, **custom 3D-printed enclosures** were designed and manufactured to house the PN532 modules.  
+These enclosures protect the electronics, provide mechanical stability, and allow the readers to be mounted securely at the entry and exit points of the gate system.  
+![3D printed PN532 enclosure](images/pn532_enclosure.jpg)
 
 ## System Architecture
 
